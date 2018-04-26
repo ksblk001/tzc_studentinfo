@@ -1,0 +1,49 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/asr/asr",
+    "pages/face/face",
+    "pages/test/test",
+    "pages/logs/logs"
+  ],
+  "window": {
+    "backgroundTextStyle": "black",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "navigationBarTitleText": "数信微学工--学生信息移动管理平台",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F8F8F8",
+    "enablePullDownRefresh": false
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "image/text.png",
+        "selectedIconPath": "image/text_HL.png",
+        "text": "文字查询"
+      },
+      {
+        "pagePath": "pages/asr/asr",
+        "iconPath": "image/asr.png",
+        "selectedIconPath": "image/asr_HL.png",
+        "text": "语音查询"
+      },
+      {
+        "pagePath": "pages/face/face",
+        "iconPath": "image/face.png",
+        "selectedIconPath": "image/face_HL.png",
+        "text": "人脸识别"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "connectSocket": 10000,
+    "uploadFile": 10000,
+    "downloadFile": 10000
+  }
+}
