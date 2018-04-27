@@ -38,9 +38,6 @@ App({
     let skey = wx.getStorageSync('skey');
     let expired_time = wx.getStorageSync('expired_time')
     var timestamp = (Date.parse(new Date()))/1000;
-    console.log(timestamp);
-    console.log(skey);
-    console.log(expired_time);
     if(skey!=''&& timestamp<expired_time){
       console.log('登录状态有效');
       //typeof cb == "function" && cb(this.globalData.userInfo)

@@ -1,9 +1,10 @@
 {
   "pages": [
+    "pages/signup/signup",
     "pages/index/index",
     "pages/asr/asr",
     "pages/face/face",
-    "pages/test/test",
+
     "pages/logs/logs"
   ],
   "window": {

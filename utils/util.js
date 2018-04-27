@@ -25,6 +25,11 @@ function formatNumber(n) {
   return n[1] ? n : '0' + n
 }
 
+
+function trim(str) {
+  return str.replace(/(^\s*)|(\s*$)/g, "");
+}
+
 //log接口封装
 function log(obj) {
   console.log('<' + formatTime(new Date(Date.now())) + '>' + ' ' + obj)
