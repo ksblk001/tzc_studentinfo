@@ -26,9 +26,56 @@ function formatNumber(n) {
 }
 
 
-function trim(str) {
-  return str.replace(/(^\s*)|(\s*$)/g, "");
+var rootDocment = 'https://wx.tzour.com';
+function req(url, data, cb) {
+  wx.request({
+    url: rootDocment + url,
+    data: data,
+    method: 'post',
+    header: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    success: function (res) {
+      return typeof cb == "function" && cb(res.data)
+    },
+    fail: function () {
+      return typeof cb == "function" && cb(false)
+    }
+  })
 }
+
+function getReq(url, data, cb) {
+  wx.request({
+    url: rootDocment + url,
+    data: data,
+    method: 'get',
+    header: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    success: function (res) {
+      return typeof cb == "function" && cb(res.data)
+    },
+    fail: function () {
+      return typeof cb == "function" && cb(false)
+    }
+  })
+}  
+
+// 去前后空格 
+function trim(str) {
+  return str.replace(/(^\s*)|(\s*$)/g, "")
+}
+// 提示错误信息  
+function isError(msg, that) {
+  that.setData({
+    showTopTips: true,
+    errorMsg: msg
+  })
+}  
+// 清空错误信息  
+function clearError(that) {
+  that.setData({
+    showTopTips: false,
+    errorMsg: ""
+  })
+}
+
 
 //log接口封装
 function log(obj) {
@@ -80,6 +127,11 @@ function getRandomItem(corpusList) {
 }
 
 module.exports = {
+  trim:trim,
+  isError: isError,
+  clearError: clearError,
+  req: req,
+  getReq: getReq,
   formatTime: formatTime,
   log: log,
   getUserUnique: getUserUnique,

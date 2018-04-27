@@ -95,6 +95,7 @@ function getSessionKey(code) {
     success: function (result) {
       if(result.data.errcode==null){
         wx.setStorageSync('skey', result.data.skey);
+        wx.setStorageSync('openid', result.data.openid);
         wx.setStorageSync('expired_time', result.data.expired_time);
         console.log(result.data);
       }else{

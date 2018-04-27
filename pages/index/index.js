@@ -56,36 +56,6 @@ Page({
 
     var that = this;
     that.isShow = true;
-
-    //调用重力加速度传感API模拟摇一摇接口
-    wx.onAccelerometerChange(function (e) {
-      
-      if (!that.isShow) {
-        //当前界面不显示时不应该调用
-        return
-      }
-
-      if (isBong(e.x) && isBong(e.y)) {
-        if (new Date().getTime() - lastYYYTime <= 2000) {
-          //1秒限制摇一次，避免摇一下触发多次请求
-          UTIL.log('摇的太频繁啦，请等2秒再摇！' + e.x + ', '+ e.y + ', ' + e.z);
-          return;
-        }
-
-        //更新最后一次成功摇的时间戳
-        lastYYYTime = new Date().getTime()
-
-        //从语料库中挑选语料运行语义理解，显示结果
-        var selectedCorpus = selectCorpusRunNli(that);
-
-        //弹Toast窗提示当前刷到哪句语料
-        wx.showToast({
-          title: selectedCorpus,
-          icon: 'success',
-          duration: 1500
-        });
-      }
-    })
   },
 
   /**
@@ -123,6 +93,11 @@ Page({
     UTIL.log('index.onReachBottom')
   },
 
+  register:function(e){
+    wx.redirectTo({
+      url: '../signup/signup'
+    })
+  },
 
   myblock:function(e){
     var method=e.target.dataset.method;

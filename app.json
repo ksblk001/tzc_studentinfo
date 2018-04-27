@@ -1,10 +1,10 @@
 {
   "pages": [
-    "pages/signup/signup",
+
     "pages/index/index",
     "pages/asr/asr",
     "pages/face/face",
-
+    "pages/signup/signup",
     "pages/logs/logs"
   ],
   "window": {
@@ -16,10 +16,10 @@
     "enablePullDownRefresh": false
   },
   "tabBar": {
-    "color": "#7A7E83",
-    "selectedColor": "#3cc51f",
+
+    "selectedColor": "#1296db",
     "borderStyle": "black",
-    "backgroundColor": "#ffffff",
+    "backgroundColor": "#E1DCC8",
     "list": [
       {
         "pagePath": "pages/index/index",
@@ -38,6 +38,12 @@
         "iconPath": "image/face.png",
         "selectedIconPath": "image/face_HL.png",
         "text": "人脸识别"
+      },
+      {
+        "pagePath": "pages/signup/signup",
+        "iconPath": "image/icon_API.png",
+        "selectedIconPath": "image/icon_API_HL.png",
+        "text": "注册绑定"
       }
     ]
   },
