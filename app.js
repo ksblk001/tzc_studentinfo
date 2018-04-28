@@ -33,6 +33,93 @@ App({
     })
   },
 
+//
+  mycheck:function(cb){
+    var that = this
+      // 调用登录接口  
+      wx.login({
+        success: function (res) {
+          var code=res.code;
+                // 请求自己的服务器  
+                wx.request({
+                  // 自己的服务接口地址  
+                  url: 'https://wx.tzour.com/sxxy/public/index.php/admin/pub/getsession_key.html',
+                  method: 'POST',
+                  header: { 'content-type': 'application/x-www-form-urlencoded' },
+                  data: { code: code },
+                  success: function (res) {
+                    console.log(res);
+                    console.log((typeof(res.data.error) == 'undefined'))
+                    // 4.解密成功后 获取自己服务器返回的结果  
+                    if(res.data.error){
+                      console.log('error跳转')
+                      wx.switchTab({
+                        url: '../signup/signup'
+                      })
+                    }else{ 
+                      console.log(res.data.skey !== '');
+                      if (res.data.skey!='') {
+                        wx.setStorageSync('user[skey]', res.data.skey)
+                        wx.setStorageSync('user[openid]', res.data.openid)
+                        wx.setStorageSync('user[expired_time]', res.data.expired_time)
+                      } else {
+                        console.log('skey注册');
+                        wx.showLoading({
+                          title: '验证失败，请注册',
+                          mask: true
+                        })
+                        wx.switchTab({
+                          url: '../signup/signup'
+                        })
+                    }
+                    }
+                  },
+                  fail: function (res) {
+                    wx.showLoading({
+                      title: '服务器网络错误',
+                      mask: true
+                    })
+                  }
+                })
+            }
+      }) 
+  },
+//检查登录状态
+  checksession:function(){
+    var that = this;
+    let skey = wx.getStorageSync('skey');
+    console.log(skey);
+    let expired_time = wx.getStorageSync('expired_time');
+    console.log(expired_time);
+    var timestamp = (Date.parse(new Date())) / 1000;
+    if (skey != '' && timestamp < expired_time) {
+      console.log('登录状态有效');
+      return true;
+    }
+    getSessionKey(that.globalData.code);
+    if(getSessionKey(that.globalData.code)){return true}
+    
+    //调用登录接口
+    wx.login({
+      success: function (user) {
+        that.globalData.code = user.code;
+        console.log('微信登录');
+        var mysession=getSessionKey(user.code)
+        console.log('函数结果2：',mysession);
+        if (mysession==false){
+          return false;
+        }else{
+          that.globalData.openid = mysession.openid;
+          console.log(that.globalData.openid); 
+        }
+      },
+      fail: function () {
+        UTIL.log('登录WX失败了！')
+      }
+    })
+  
+  },
+
   getUserInfo:function(cb){
     var that = this
     let skey = wx.getStorageSync('skey');
@@ -46,7 +133,7 @@ App({
       wx.login({
         success: function (user) {
           that.globalData.code=user.code;
-          that.globalData.openid=getSessionKey(user.code);
+          //that.globalData.openid=getSessionKey(user.code).openid;
           console.log(that.globalData.openid);
           wx.getUserInfo({
             success: function (res) {
@@ -82,7 +169,8 @@ App({
   }
 })
 
-function getSessionKey(code) {
+function getSessionKey(code,session) {
+  var sessionresult;
   wx.request({
     url: 'https://wx.tzour.com/sxxy/public/index.php/admin/pub/getsession_key.html',//requestUrl,
     data: {
@@ -97,13 +185,18 @@ function getSessionKey(code) {
         wx.setStorageSync('skey', result.data.skey);
         wx.setStorageSync('openid', result.data.openid);
         wx.setStorageSync('expired_time', result.data.expired_time);
-        console.log(result.data);
+        console.log('成功的结果：',result.data);
+        sessionresult=result.data;
       }else{
         console.log('错误');
+        sessionresult=false;
       }
     },
     fail: function ({ errMsg }) {
       console.log('错误'+code);
+      sessionresult=false;
     }
   })
+  console.log('函数的结果',sessionresult);
+  return sessionresult;
 }

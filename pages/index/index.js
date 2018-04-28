@@ -10,7 +10,7 @@ var lastYYYTime = new Date().getTime();
 
 var domainCorpus = '';
 var lastCorpus = '';
-
+var timer;
 
 Page({
 
@@ -34,11 +34,6 @@ Page({
    */
   onLoad: function (options) {
     UTIL.log('index.onLoad')
-    //调用应用实例的方法获取全局数据
-    app.getUserInfo(function (userInfo2) {
-      UTIL.log('user unique 1: ' + UTIL.getUserUnique(userInfo2))
-    })
-    UTIL.log('user unique 2: ' + UTIL.getUserUnique(app.globalData.userInfo))
   },
 
   /**
@@ -53,7 +48,60 @@ Page({
    */
   onShow: function () {
     UTIL.log('index.onShow')
+    var skey = wx.getStorageSync('user[skey]')
+    var openid = wx.getStorageSync('user[openid]')
+    var expired_time = wx.getStorageSync('user[expired_time]')
+    var timestamp = (Date.parse(new Date())) / 1000;
+    if (skey != '' && timestamp < expired_time) {
+      return;
+    }
+    var timeflag = Date.parse(new Date());
+    wx.showLoading({
+      title: '登录验证中',
+      mask: true
+    })
+    // 因为我需要登录后的用户信息,但是app.getUserInfo和下面的request请求基本上是同时请求的所以获取不到  
+    app.mycheck();
+    // 在这里我设置了一个定时器循环多次去执行去判断上一步的函数执行完毕没有  
+    // 但是也不能无限循环,所以要叫一个判断当执行超过多少秒后报一个网络错误  
+    var times = setInterval(function () {
+      // 因为一开始缓存当中指定的key为假当为真的时候就说明上一步成功了这时候就可以开始发送下一步的请求了  
+      var skey = wx.getStorageSync('user[skey]')
+      var openid = wx.getStorageSync('user[openid]')
+      var expired_time = wx.getStorageSync('user[expired_time]')
+      var timestamp = (Date.parse(new Date())) / 1000;
+      if (skey != '' && timestamp < expired_time) {
+        // 在这里停止加载的提示框  
+        setTimeout(function () {
+          wx.hideLoading()
+        }, 1000)
+        // 这里必须要清除不然就等着循环死吧  
+        clearTimeout(times);
 
+        var skey = wx.getStorageSync('user[skey]')    // 用户名  
+        var openid = wx.getStorageSync('user[openid]')  // 用户token  
+        var expired_time = wx.getStorageSync('user[expired_time]')// 考试类型  
+        wx.showToast({
+          title: '验证成功',
+          icon: 'success',
+          duration:1500
+        })
+      } else {
+        if (Date.parse(new Date()) > (timeflag + 8000)) {
+          setTimeout(function () {
+            wx.hideLoading()
+          }, 1000)
+          // 这里必须要清除不然就等着循环死吧  
+          clearTimeout(times);
+          wx.showToast({
+            title: '登录验证失败',
+            image: '../../image/ava_error.png',
+            duration: 1500
+          })
+        }
+
+      }
+    });
     var that = this;
     that.isShow = true;
   },
@@ -93,12 +141,6 @@ Page({
     UTIL.log('index.onReachBottom')
   },
 
-  register:function(e){
-    wx.redirectTo({
-      url: '../signup/signup'
-    })
-  },
-
   myblock:function(e){
     var method=e.target.dataset.method;
     var keyword=e.target.dataset.keyword;
@@ -133,7 +175,6 @@ Page({
       console.log(app.globalData.code);
       console.log("点击");
     }else{
-
       var method = e.target.dataset.method;
       var keyword = e.target.dataset.keyword;
       UTIL.log(keyword);
@@ -192,19 +233,22 @@ Page({
 //处理NLI语义结果
 function NliProcess(method,keyword, self) {
   var nliResult;
+  var skey = wx.getStorageSync('user[skey]');
+  console.log(skey);
   method=method||'xm';
   wx.request({
     url: 'https://wx.tzour.com/sxxy/public/index.php/admin/pub/xcxapi.html',//requestUrl,
     data: {
       method: method,
       keyword: keyword,
+      skey: skey
     },
     header: {
       'content-type': 'application/x-www-form-urlencoded'
     },
     method: 'POST',
     success: function (result) {
-      //UTIL.log(result.data.error_code);
+      UTIL.log(result.data);
       if (typeof(result.data.error_code) == "undefined"){
         var data = result.data.content;
         //var jsonData = JSON.stringify(data);

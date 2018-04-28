@@ -1,5 +1,4 @@
 <view class="container" style="height:100%;">
-
 <scroll-view id="myscroll" scroll-y="true" scroll-top="{{scrolltop}}" >
   <view id="stu" wx:for="{{outputTxt}}" wx:for-item="stu">
     
