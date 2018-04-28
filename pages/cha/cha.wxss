@@ -1,100 +1,79 @@
 @import 'weui.wxss';
-.content{  
-  display: flex;  
-  flex-direction: row;  
-} 
-
-#myscroll{
-  width:85%;
-  height:450px;
-  border-top: 8rpx solid #ddd;
-  border-bottom: 8rpx solid #ddd;
-  border-left: 8rpx solid #ddd;
-  border-right: 8rpx solid #ddd;
-}
-
-#panel{
-  width:100%;
-  background:#fff;
-}
-.photo{
-  border-left: 8rpx solid #ddd;
-  border-right: 8rpx solid #ddd;
-  border-top: 8rpx solid #ddd;
-  border-bottom: 8rpx solid #ddd;
-  align-items: center;
-}
-
-#panel text{
-  height:100%;
-  line-height: 6vh;
-  border-left: 4rpx solid #ddd;
-  border-right: 4rpx solid #ddd;
-  font-size:4vh;
-  text-align:left;
-}
-
-#myrow{
-  border-right: 4rpx solid #ddd;
-  border-left: 4rpx solid #ddd;
-  border-bottom: 2rpx solid #ddd;
-  border-top: 2rpx solid #ddd;
-}
-.flex-td{
-  width:30%;
-  font-weight:bold;
-}
-.flex-row{
-  display: flex;
-  flex-direction: row;
-  justify-content: left;
-  align-items: center;
-}
-.flex-column{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: stretch;
-}
-
-.flex-cell{
-  flex: 1;
-}
+.back_img{  
+      background: url(https://wx.tzour.com/image/textBack.jpg) no-repeat;
+      background-size:cover;  
+      -webkit-filter: blur(10px); /* Chrome, Opera */  
+      -moz-filter: blur(10px);  
+      -ms-filter: blur(10px);      
+      filter: blur(10px);   
+      z-index:0;  
+      position:relative;  
+    }
+    .login_info{  
+      z-index: 999;  
+      position:absolute;  
+    }  
+    .login_form{  
+      border-radius:5px;  
+      margin-left:8%;  
+      background-color: rgba(255,255,255,0.2);  
+    }  
 
 
-
-
-
-
-
-
-
-
-
-.page-section{
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 5rpx;
-  width:60%;
-}
-
-
-.weui-cells {
-  position: relative;
-  margin-top: 2.17647059em;
-  background-color: #DCDCDC;
-  line-height: 1.41176471;
-  font-size: 14px;
-}
-
-.weui-cells_after-title {
-  margin-top: 40;
-}
-
-.weui-input {
-  height: 3em;
-  width: 17em;
-  min-height: 3em;
-  line-height: 3em;
-  font-size: 1.3em;
-}
+    .search-wrapper {  
+      position: fixed;/*悬停搜索框的关键样式*/  
+      top: 0px;  
+      left: 0;  
+      width: 100%;  
+      z-index: 1000;  
+    }  
+      
+    .search-panel {  
+      background-color: #E1DCC8;  
+    }  
+      
+    .search-section {  
+      padding: 5px 0px;  
+      display: flex;  
+      flex-direction: row;  
+    }  
+      
+    .search-demo {  
+      padding: 5px;  
+      flex-direction: row;  
+      background-color: #eee;  
+      padding-left:42px;     
+      align-items: flex-start;  
+    }  
+      
+    .search-input-wrapper {  
+      flex: 8;  
+      padding: 5px;  
+      background-color: #eee;  
+      border-radius: 3px;  
+    }  
+      
+    .search-input {
+      padding-top: 3px;
+    }  
+      
+    .search-clear {  
+      float: right;  
+      width: 32px;  
+      height: 25px;  
+      z-index: 998;  
+    }  
+      
+    .search-button-wrapper {  
+      padding-left: 5px;  
+      padding-right: 5px;  
+      padding-top:5px;   
+    }  
+      
+    .search-button {  
+      flex: 1;  
+      border: none !important;  
+      color: white !important;  
+      width: 20px;  
+      height: 20px;  
+    }  

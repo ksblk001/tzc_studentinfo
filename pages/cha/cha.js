@@ -1,152 +1,65 @@
-//获取应用实例
-var app = getApp()
-
-var UTIL = require('../../utils/util.js');
-var GUID = require('../../utils/GUID.js');
-var NLI = require('../../utils/NLI.js');
-
-var cursor = 0;
-var lastYYYTime = new Date().getTime();
-
-var domainCorpus = '';
-var lastCorpus = '';
-var timer;
+var util = require('../../utils/util.js');
+var app = getApp();
+const commits = ['姓名', '性别', '寝室']
+const methods = ['xm', 'xb', 'qs']
 
 Page({
-
-  isShow: false,
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-    //调试后门
-    isDbg: false,
-    //输入框文本
-    inputTxt: '',
-    //输出框文本
+
+    isShow: false,
+    commits: commits,
+    methods: methods,
+    method: 'xm',
+    commit: '姓名',
+    value: [0],
+
+    showTopTips: false,
+    errorMsg: "",
     outputTxt: '',
-    scrolltop:0
+    scrolltop: 0,
+
+    barcode: "",
+    hiddenLoading: true,
+    hiddenData: true,
+    hiddenDropdown: true,
+    hiddenClear: true,
+    demoData: '张权',
+    Product: {},
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-    UTIL.log('index.onLoad')
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-    UTIL.log('index.onReady')
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-    UTIL.log('index.onShow')
-    var skey = wx.getStorageSync('user[skey]')
-    var openid = wx.getStorageSync('user[openid]')
-    var expired_time = wx.getStorageSync('user[expired_time]')
-    var timestamp = (Date.parse(new Date())) / 1000;
-    if (skey != '' && timestamp < expired_time) {
-      return;
-    }
-    var timeflag = Date.parse(new Date());
-    wx.showLoading({
-      title: '登录验证中',
-      mask: true
-    })
-    // 因为我需要登录后的用户信息,但是app.getUserInfo和下面的request请求基本上是同时请求的所以获取不到  
-    app.mycheck();
-    // 在这里我设置了一个定时器循环多次去执行去判断上一步的函数执行完毕没有  
-    // 但是也不能无限循环,所以要叫一个判断当执行超过多少秒后报一个网络错误  
-    var times = setInterval(function () {
-      // 因为一开始缓存当中指定的key为假当为真的时候就说明上一步成功了这时候就可以开始发送下一步的请求了  
-      var skey = wx.getStorageSync('user[skey]')
-      var openid = wx.getStorageSync('user[openid]')
-      var expired_time = wx.getStorageSync('user[expired_time]')
-      var timestamp = (Date.parse(new Date())) / 1000;
-      if (skey != '' && timestamp < expired_time) {
-        // 在这里停止加载的提示框  
-        setTimeout(function () {
-          wx.hideLoading()
-        }, 1000)
-        // 这里必须要清除不然就等着循环死吧  
-        clearTimeout(times);
-
-        var skey = wx.getStorageSync('user[skey]')    // 用户名  
-        var openid = wx.getStorageSync('user[openid]')  // 用户token  
-        var expired_time = wx.getStorageSync('user[expired_time]')// 考试类型  
-        wx.showToast({
-          title: '验证成功',
-          icon: 'success',
-          duration:1500
+  onLoad: function () {
+    var that = this;
+    wx.getSystemInfo({
+      success: function (res) {
+        that.setData({
+          windowHeight: res.windowHeight,
+          windowWidth: res.windowWidth
         })
-      } else {
-        if (Date.parse(new Date()) > (timeflag + 8000)) {
-          setTimeout(function () {
-            wx.hideLoading()
-          }, 1000)
-          // 这里必须要清除不然就等着循环死吧  
-          clearTimeout(times);
-          wx.showToast({
-            title: '登录验证失败',
-            image: '../../image/ava_error.png',
-            duration: 1500
-          })
-        }
-
       }
     });
-    var that = this;
-    that.isShow = true;
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-    UTIL.log('index.onHide')
-    //页面隐藏后，关掉摇一摇检测
-    wx.stopAccelerometer();
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-    UTIL.log('index.onUnload')
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-    UTIL.log('index.onPullDownRefresh')
-    
-    wx.stopPullDownRefresh();
-
-    //页面下拉，触发轮换语料理解
-    selectCorpusRunNli(this)
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
   onReachBottom: function () {
-    UTIL.log('index.onReachBottom')
+    console.log('index.onReachBottom')
   },
 
-  myblock:function(e){
-    var method=e.target.dataset.method;
-    var keyword=e.target.dataset.keyword;
-    UTIL.log(keyword);
-    NliProcess(method, keyword, this);
-    
+  pickershow: function (e) {
+    this.setData({ isShow: !this.data.isShow })
+  },
+  bindChange: function (e) {
+    const val = e.detail.value
+    this.setData({
+      method: this.data.methods[val[0]],
+      commit: this.data.commits[val[0]]
+    })
+    console.log(this.data.method);
+    console.log(this.data.commit);
+  },
+
+  previewImage: function (e) {
+    var current = e.target.dataset.src;
+    wx.previewImage({
+      current: current, // 当前显示图片的http链接  
+      urls: [current] // 需要预览的图片http链接列表  
+    })
   },
 
   bindTouchStart: function (e) {
@@ -159,7 +72,7 @@ Page({
     if (this.endTime - this.startTime < 350) {
       var method = e.target.dataset.method;
       var keyword = e.target.dataset.keyword;
-      if (['dh', 'ch', 'fqdh', 'mqdh','jtdh'].indexOf(method)!=-1){
+      if (['dh', 'ch', 'fqdh', 'mqdh', 'jtdh'].indexOf(method) != -1) {
         wx.makePhoneCall({
           phoneNumber: keyword, //此号码并非真实电话号码，仅用于测试  
           success: function () {
@@ -168,17 +81,17 @@ Page({
           fail: function () {
             console.log("拨打电话失败！")
           }
-        }) 
+        })
 
 
       }
       console.log(app.globalData.code);
       console.log("点击");
-    }else{
+    } else {
       var method = e.target.dataset.method;
       var keyword = e.target.dataset.keyword;
-      UTIL.log(keyword);
-      NliProcess(method, keyword, this);
+      console.log(keyword);
+      requestStuInfo(method, keyword, this);
       console.log("长按");
       wx.showToast({
         title: "加载：" + keyword,
@@ -191,66 +104,86 @@ Page({
     //console.log("长按");
   },
 
-
-  previewImage: function(e){
-    var current = e.target.dataset.src;
-    wx.previewImage({
-      current: current, // 当前显示图片的http链接  
-      urls: [current] // 需要预览的图片http链接列表  
+  bindBarcodeInput: function (e) {
+    this.setData({
+      barcode: e.detail.value
     })
   },
-
-  //输入文本框聚焦触发清除输入框中的内容
-  bindFocusClear: function(e) {
-    UTIL.log('index.bindFocusClear')
-    if (e.detail.value === '') {
-      return;
-    }
-
-    UTIL.log('clear: ' + e.detail.value)
-    var self = this;
-    self.setData({
-      inputTxt: ''
+  bindBarcodeFocus: function (e) {
+    this.setData({
+      hiddenDropdown: false,
+      hiddenClear: false
+    })
+  },
+  bindBarcodeBlur: function (e) {
+    this.setData({
+      hiddenDropdown: true,
+      hiddenClear: true
+    })
+  },
+  scan: function (e) {
+    var that = this;
+    wx.scanCode({
+      success: function (res) {
+        that.setData({
+          barcode: res.result
+        });
+        that.query(e);
+      },
+      fail: function () {
+        that.setData({
+          barcode: "",
+          hiddenData: true
+        });
+      },
+      complete: function () {
+        // complete  
+      }
+    })
+  },
+  setDemoData: function (e) {
+    this.setData({
+      barcode: this.data.demoData
     });
   },
-
-  //点击完成按钮时触发
-  bindConfirmControl: function(e) {
-    var inputTxt = e.detail.value;
-    UTIL.log('index.bindConfirmControl input string: ' + inputTxt);
-    //手动打字输入语料运行语义理解
-    NliProcess('xm',inputTxt, this)
+  clear: function (e) {
+    this.setData({
+      barcode: "",
+      hiddenData: true
+    });
   },
+  query: function (e) {
+    var that = this;
+    if (that.data.barcode == undefined
+      || that.data.barcode == null
+      || that.data.barcode.length <= 0) {
+      that.setData({ hiddenData: true });
+      wx.showToast({
+        title: '请输入条码',
+        image: '../../image/ava_error.png',
+        duration: 2000
+      });
+      return;
+    }
+    var method = this.data.method;
+    var keyword = that.data.barcode
+    requestStuInfo(method,keyword,this);
 
-
-  turnToNew: function() {
-    wx.navigateBack({
-    })
-  }
+  },
 })
 
-
-//处理NLI语义结果
-function NliProcess(method,keyword, self) {
-  var nliResult;
+function requestStuInfo(method,keyword,self){
   var skey = wx.getStorageSync('user[skey]');
-  console.log(skey);
-  method=method||'xm';
+  var url = "https://wx.tzour.com/sxxy/public/admin/pub/xcxapi.html";//查询数据的URL 
   wx.request({
-    url: 'https://wx.tzour.com/sxxy/public/index.php/admin/pub/xcxapi.html',//requestUrl,
-    data: {
-      method: method,
-      keyword: keyword,
-      skey: skey
-    },
-    header: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
-    method: 'POST',
-    success: function (result) {
-      UTIL.log(result.data);
-      if (typeof(result.data.error_code) == "undefined"){
-        var data = result.data.content;
+    url: url,
+    data: { keyword: keyword, skey: skey, method: method },
+    method: 'GET',
+    success: function (res) {
+      var result = res.data;
+      console.log(result);
+      if (typeof (result.error_code) == "undefined") {
+        var data = result.content;
         //var jsonData = JSON.stringify(data);
         //typeof cb == "function" && cb(true, jsonData)
         typeof self !== 'undefined' && self.setData({
@@ -260,18 +193,37 @@ function NliProcess(method,keyword, self) {
         typeof self !== 'undefined' && self.setData({
           scrolltop: 0
         })
-        //query.select("#myscroll").scroll-top=0;//scrollOffset(0);
+        self.setData({ showTopTips: false, errorMsg: '' });
         wx.showToast({
-          title: keyword+" OK！",
+          title: keyword + " OK！",
           icon: 'success',
           duration: 2000
         })
-      }else{
-
+      } else {
+        self.setData({ hiddenData: true });
+        self.setData({ showTopTips: true, errorMsg: result.error_message});
+        wx.showToast({
+          title: result.error_message,
+          image: '../../image/ava_error.png',
+          duration: 2000
+        })
+        return;
       }
     },
-    fail: function ({ errMsg }) {
-      typeof cb == "function" && cb(false, jsonData)
+    fail: function (e) {
+      var toastText = '获取数据失败' + JSON.stringify(e);
+      self.setData({
+        hiddenLoading: !self.data.hiddenLoading,
+        hiddenData: true
+      });
+      wx.showToast({
+        title: toastText,
+        icon: '',
+        duration: 2000
+      })
+    },
+    complete: function () {
+      // complete  
     }
   })
 }

@@ -1,6 +1,6 @@
 {
   "pages": [
-
+    "pages/cha/cha",
     "pages/index/index",
     "pages/asr/asr",
     "pages/face/face",
@@ -18,8 +18,8 @@
   "tabBar": {
 
     "selectedColor": "#1296db",
-    "borderStyle": "black",
-    "backgroundColor": "#E1DCC8",
+    "borderStyle": "white",
+    "backgroundColor": "#E4DFCC",
     "list": [
       {
         "pagePath": "pages/index/index",
@@ -44,6 +44,12 @@
         "iconPath": "image/icon_API.png",
         "selectedIconPath": "image/icon_API_HL.png",
         "text": "注册绑定"
+      },
+      {
+        "pagePath": "pages/cha/cha",
+        "iconPath": "image/icon_API.png",
+        "selectedIconPath": "image/icon_API_HL.png",
+        "text": "文字查询1"
       }
     ]
   },
