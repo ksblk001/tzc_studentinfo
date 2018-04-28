@@ -1,0 +1,8 @@
+{
+  "window": {
+    "enablePullDownRefresh": true
+  },
+  "borderStyle": "black",
+  "navigationBarBackgroundColor": "#E1DCC8",
+  "navigationBarTitleText": "数信微学工---文字查询"
+}

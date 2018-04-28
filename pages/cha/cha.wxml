@@ -1,0 +1,55 @@
+	      <view class="weui-search-bar">
+            <view class="weui-search-bar__form">
+                <view class="weui-search-bar__box" style="text-align: left">
+                    <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
+                    <input type="text" class="weui-search-bar__input" placeholder="搜索" />
+                </view>
+                <label class="weui-search-bar__label">
+                    <icon class="weui-icon-search" type="search" size="14"></icon>
+                    <view style="" class="weui-search-bar__text">搜索</view>
+                </label>
+            </view>
+        </view>
+<view class="container" style="height:80%;">
+        <!-- <view class="weui-cells searchbar-result" wx:if="{{inputVal.length > 0}}">
+            <navigator url="" class="weui-cell" hover-class="weui-cell_active">
+                <view class="weui-cell__bd">
+                    <view>实时搜索文本</view>
+                </view>
+            </navigator>
+        </view> -->
+<scroll-view id="myscroll" scroll-y="true" scroll-top="{{scrolltop}}" >
+  <view id="stu" wx:for="{{outputTxt}}" wx:for-item="stu">
+    
+    <view id="panel" class="photo flex-column">
+      <view id="myrow" class="flex-row flex-cell">
+        <text class="flex-cell flex-row flex-td">个人照片：</text>
+        <view style="width:50%;">
+          <image class="photo" mode="widthFix" style="width:80%;" src="{{stu.zp}}" data-src="{{stu.zp}}" bindtap="previewImage"></image>
+        </view>
+      </view>
+      <view id="myrow" class="flex-row flex-cell" wx:for="{{stu.info}}" wx:for-item="stuinfo" data-method="{{stuinfo[0]}}" data-keyword="{{stuinfo[2]}}" bindtouchstart="bindTouchStart" bindtouchend="bindTouchEnd" bindlongtap="bingLongTap" bindtap="bindTap">
+        <text class="flex-cell flex-row flex-td" data-method="{{stuinfo[0]}}" data-keyword="{{stuinfo[2]}}">{{stuinfo[1]}}：</text>
+        <text class="flex-cell flex-row" data-method="{{stuinfo[0]}}" data-keyword="{{stuinfo[2]}}">{{stuinfo[2]}}</text>
+      </view>
+    </view>
+
+    <view id="panel" class="flex-column">
+      <view id="myrow" class="flex-row flex-cell" wx:for="{{stu.learn}}" wx:for-item="stulearn" data-method="{{stulearn[0]}}" data-keyword="{{stulearn[2]}}" bindlongpress="myblock">
+        <text class="flex-cell flex-row  flex-td" data-method="{{stulearn[0]}}" data-keyword="{{stulearn[2]}}">{{stulearn[1]}}：</text>
+        <text class="flex-cell flex-row" data-method="{{stulearn[0]}}" data-keyword="{{stulearn[2]}}">{{stulearn[2]}}</text>
+      </view>
+    </view>
+  </view>
+
+</scroll-view>
+  
+  <view class="page-section">
+    <view class="weui-cells weui-cells_after-title">
+        <input class="weui-input" placeholder-style="color:#6aa84f"  maxlength="50" 
+          placeholder="点此手动输入" value="{{inputTxt}}" confirm-type ="send" bindconfirm="bindConfirmControl" bindfocus="bindFocusClear"/>
+    </view>
+  </view>
+
+
+</view>
