@@ -8,28 +8,35 @@
     password ：密码  
     subPassword ：确认密码  
     -->  
-      <view class="search-wrapper">  
+    
+<view wx:if="{{isfull}}" class="fullbg {{isfull ?'fullopacity':''}}" bindtap="hidebg"></view>
+      <view class="search-wrapper">
        <view class="search-panel">  
-         <view class="search-section">  
-           <view class="search-button-wrapper">  
-              <view bindtap="pickershow">{{commit}}</view>
-              <picker-view indicator-style="height: 50px;" wx:if="{{isShow}}" style="position:absolute;width: 30%; height: 200px;" value="{{value}}" bindchange="bindChange">
-                <picker-view-column>
-                  <view wx:for="{{commits}}" style="line-height: 50px">{{item}}</view>
-                </picker-view-column>
-              </picker-view>
+         <view class="search-section" >  
+           <view class="search-button-wrapper" style="padding-left:0px;">  
+                    <view style="opacity:0.5;padding-left:8px;" bindtap="list" data-nav="2" class="{{shownavindex == 2? 'active' : ''}}">
+                        <view class="content" data-method="{{method}}">{{commit}}</view>
+                        <view class="icon"></view>
+                    </view>
+                <view style="position:absolute;" class="temp temp1 {{nzopen ? 'slidown' : 'slidup'}} {{nzshow ? 'disappear':''}}">
+                    <view bindtap='checkselect' wx:for="{{content}}" data-method="{{item[1]}}" data-commit="{{item[0]}}">
+                        {{item[0]}}
+                    </view>
+                </view>
+
+
            </view>  
            <view class="search-input-wrapper ">  
              <input bindinput="bindBarcodeInput" bindconfirm="query" bindfocus="bindBarcodeFocus" bindblur="bindBarcodeBlur" class="search-input" placeholder="输入查询关键字" value="{{barcode}}" confirm-type="search" />  
            </view>  
-           <view class="search-button-wrapper">  
-             <image class="search-button" src="../../image/search.png" bindtap="query"></image>  
+           <view class="search-button-wrapper" style='width:45px;margin-left:15px;' bindtap="query">  
+             <image class="search-button" src="../../image/search.png" ></image>  
            </view>  
          </view>  
        </view>  
        <view class="search-demo" hidden="{{hiddenDropdown}}">  
-         <button size="mini" bindtap="setDemoData">示例</button>  
-         <button size="mini" bindtap="clear" style="margin-left:10px;">清空</button>  
+         <button wx:for="{{querylog}}" size="mini" bindtap="setDemoData" data-method="{{item[0]}}"  data-keyword="{{item[1]}}"  data-commit="{{item[2]}}">{{item[1]}}</button>
+         <button size="mini" bindtap="clear" style="margin-left:10px;">清空记录</button>  
        </view>
      </view>
 
@@ -49,7 +56,7 @@
     <!--一位学生信息-->
     <view style="position:static;" wx:for="{{outputTxt}}" wx:for-item="stu">
             <view class="weui-cell__hd" sytle="width: {{windowWidth}}px;text-align:center;margin-left:auto;">  
-                <view style="position:relative;width: {{windowWidth}}px;border-right:2rpx solid #E9E9E9;text-align:center;margin-left:auto;">第{{index+1}}条记录--总共{{outputTxt.length}}条</view>  
+                <view style="position:relative;width: {{windowWidth}}px;border-right:2rpx solid #E9E9E9;text-align:center;margin-left:auto;">当前第{{index+1}}条记录——共{{outputTxt.length}}条</view>  
             </view> 
       <!--圆形图-->
       <view style="top:{{windowHeight * 0.06}}px;">

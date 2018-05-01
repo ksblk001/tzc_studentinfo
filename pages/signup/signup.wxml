@@ -8,28 +8,6 @@
     password ：密码  
     subPassword ：确认密码  
     -->  
-      <view class="search-wrapper">  
-       <view class="search-panel">  
-         <view class="search-section">  
-           <view class="search-button-wrapper">  
-             <image class="search-button" src="../../image/scan.png" bindtap="scan"></image>  
-           </view>  
-           <view class="search-input-wrapper ">  
-             <input bindinput="bindBarcodeInput" bindconfirm="query" bindfocus="bindBarcodeFocus" bindblur="bindBarcodeBlur" class="search-input" placeholder="输入查询关键字" value="{{barcode}}" confirm-type="search" />  
-           </view>  
-           <view class="search-button-wrapper">  
-             <image class="search-button" src="../../image/search.png" bindtap="query"></image>  
-           </view>  
-         </view>  
-       </view>  
-       <view class="search-demo" hidden="{{hiddenDropdown}}">  
-         <button size="mini" bindtap="setDemoData">示例</button>  
-         <button size="mini" bindtap="clear" style="margin-left:10px;">清空</button>  
-       </view>  
-     </view>
-
-
-
     <view class="page__bd">  
       <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">{{errorMsg}}</view>      
       
@@ -72,7 +50,6 @@
             </view>  
             <view class="weui-btn-area">  
               <button class="weui-btn" type="primary" formType="submit">注册</button>
-              <button class="weui-btn" type="primary" bindtap='clearstorage'>清除缓存</button>
             </view>  
           </view>  
         </view>  

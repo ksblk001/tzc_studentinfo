@@ -1,8 +1,8 @@
 {
   "pages": [
+    "pages/asrq/asrq",
     "pages/cha/cha",
     "pages/index/index",
-    "pages/asr/asr",
     "pages/face/face",
     "pages/signup/signup",
     "pages/logs/logs"
@@ -22,13 +22,13 @@
     "backgroundColor": "#E4DFCC",
     "list": [
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/cha/cha",
         "iconPath": "image/text.png",
         "selectedIconPath": "image/text_HL.png",
         "text": "文字查询"
       },
       {
-        "pagePath": "pages/asr/asr",
+        "pagePath": "pages/asrq/asrq",
         "iconPath": "image/asr.png",
         "selectedIconPath": "image/asr_HL.png",
         "text": "语音查询"
@@ -44,12 +44,6 @@
         "iconPath": "image/icon_API.png",
         "selectedIconPath": "image/icon_API_HL.png",
         "text": "注册绑定"
-      },
-      {
-        "pagePath": "pages/cha/cha",
-        "iconPath": "image/icon_API.png",
-        "selectedIconPath": "image/icon_API_HL.png",
-        "text": "文字查询1"
       }
     ]
   },

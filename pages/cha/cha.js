@@ -1,17 +1,19 @@
 var util = require('../../utils/util.js');
 var app = getApp();
-const commits = ['姓名', '性别', '寝室']
-const methods = ['xm', 'xb', 'qs']
 
 Page({
   data: {
+    querylog:[],
+    content: [],
+    commits: [['学号', 'xh'], ['姓名', 'xm'], ['寝室', 'xsqs'], ['班级', 'bj'], ['短号', 'dh'], ['长号', 'ch'], ['民族', 'mz'], ['政治面貌', 'zzmm'],  ['籍贯', 'jg'],  ['性别', 'xb'], ['父亲姓名', 'fqxm'], ['父亲电话', 'fqdh'], ['母亲姓名', 'mqxm'], ['母亲电话', 'mqdh']],
+    nzopen: false,
+    nzshow: false,
+    isfull: false,
+    shownavindex: '',
 
-    isShow: false,
-    commits: commits,
-    methods: methods,
     method: 'xm',
     commit: '姓名',
-    value: [0],
+
 
     showTopTips: false,
     errorMsg: "",
@@ -37,21 +39,60 @@ Page({
       }
     });
   },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    var that=this;
+    checklogin(that);
+  },
+
   onReachBottom: function () {
     console.log('index.onReachBottom')
   },
 
-  pickershow: function (e) {
-    this.setData({ isShow: !this.data.isShow })
+  list: function (e) {
+    if (this.data.nzopen) {
+      this.setData({
+        nzopen: false,
+        nzshow: false,
+        isfull: false,
+        shownavindex: 0
+      })
+    } else {
+      this.setData({
+        content: this.data.commits,
+        nzopen: true,
+        nzshow: false,
+        isfull: true,
+        shownavindex: e.currentTarget.dataset.nav
+      })
+    }
   },
-  bindChange: function (e) {
-    const val = e.detail.value
+  hidebg: function (e) {
+
     this.setData({
-      method: this.data.methods[val[0]],
-      commit: this.data.commits[val[0]]
+      nzopen: false,
+      nzshow: false,
+      isfull: false,
+      shownavindex: 0
     })
-    console.log(this.data.method);
-    console.log(this.data.commit);
+  },
+
+  checkselect: function (e) {
+    const method = e.target.dataset.method
+    const commit = e.target.dataset.commit
+    this.setData({
+      method: method,
+      commit: commit
+    })
+    this.setData({
+      nzopen: false,
+      nzshow: false,
+      isfull: false,
+      shownavindex: 0
+    })
   },
 
   previewImage: function (e) {
@@ -82,11 +123,8 @@ Page({
             console.log("拨打电话失败！")
           }
         })
-
-
       }
-      console.log(app.globalData.code);
-      console.log("点击");
+
     } else {
       var method = e.target.dataset.method;
       var keyword = e.target.dataset.keyword;
@@ -111,6 +149,7 @@ Page({
   },
   bindBarcodeFocus: function (e) {
     this.setData({
+      querylog: wx.getStorageSync('querylog'),
       hiddenDropdown: false,
       hiddenClear: false
     })
@@ -121,35 +160,22 @@ Page({
       hiddenClear: true
     })
   },
-  scan: function (e) {
-    var that = this;
-    wx.scanCode({
-      success: function (res) {
-        that.setData({
-          barcode: res.result
-        });
-        that.query(e);
-      },
-      fail: function () {
-        that.setData({
-          barcode: "",
-          hiddenData: true
-        });
-      },
-      complete: function () {
-        // complete  
-      }
-    })
-  },
   setDemoData: function (e) {
+    var method = e.target.dataset.method;
+    var keyword = e.target.dataset.keyword;
+    var commit = e.target.dataset.commit;
     this.setData({
-      barcode: this.data.demoData
+      method:method,
+      commit:commit,
+      barcode: keyword
     });
   },
   clear: function (e) {
+    wx.removeStorageSync('querylog');
     this.setData({
       barcode: "",
-      hiddenData: true
+      hiddenData: true,
+      querylog:""
     });
   },
   query: function (e) {
@@ -167,13 +193,24 @@ Page({
     }
     var method = this.data.method;
     var keyword = that.data.barcode
+    var commit = this.data.commit;
     requestStuInfo(method,keyword,this);
+    var querytmp=[];
+    if(wx.getStorageSync('querylog')!=''){
+      querytmp = wx.getStorageSync('querylog')
+      }
+    querytmp.splice(9, 1); 
+    querytmp.splice(0, 0, [method,keyword,commit]);
+    that.setData({querylog:querytmp});
+    wx.setStorageSync('querylog', querytmp);
+    //console.log(that.data.querylog);
 
   },
 })
 
 function requestStuInfo(method,keyword,self){
   var skey = wx.getStorageSync('user[skey]');
+  console.log(method+','+keyword);
   var url = "https://wx.tzour.com/sxxy/public/admin/pub/xcxapi.html";//查询数据的URL 
   wx.request({
     url: url,
@@ -200,6 +237,15 @@ function requestStuInfo(method,keyword,self){
           duration: 2000
         })
       } else {
+        if(result.error_code=='002'){
+          try {
+            wx.clearStorageSync()
+          } catch (e) {
+            // Do something when catch error
+          }
+          checklogin(self);
+
+        }
         self.setData({ hiddenData: true });
         self.setData({ showTopTips: true, errorMsg: result.error_message});
         wx.showToast({
@@ -226,4 +272,68 @@ function requestStuInfo(method,keyword,self){
       // complete  
     }
   })
+}
+
+//检查登录状态
+function checklogin(self){
+var skey = wx.getStorageSync('user[skey]')
+var openid = wx.getStorageSync('user[openid]')
+var expired_time = wx.getStorageSync('user[expired_time]')
+var timestamp = (Date.parse(new Date())) / 1000;
+if (skey != '' && timestamp < expired_time) {
+  return;
+}
+login(self);
+}
+
+//重新获取登录状态
+function login(self){
+var timeflag = Date.parse(new Date());
+wx.showLoading({
+  title: '登录验证中',
+  mask: true
+})
+// 因为我需要登录后的用户信息,但是app.getUserInfo和下面的request请求基本上是同时请求的所以获取不到  
+app.mycheck();
+// 在这里我设置了一个定时器循环多次去执行去判断上一步的函数执行完毕没有  
+// 但是也不能无限循环,所以要叫一个判断当执行超过多少秒后报一个网络错误  
+var times = setInterval(function () {
+  // 因为一开始缓存当中指定的key为假当为真的时候就说明上一步成功了这时候就可以开始发送下一步的请求了  
+  var skey = wx.getStorageSync('user[skey]')
+  var openid = wx.getStorageSync('user[openid]')
+  var expired_time = wx.getStorageSync('user[expired_time]')
+  var timestamp = (Date.parse(new Date())) / 1000;
+  if (skey != '' && timestamp < expired_time) {
+    // 在这里停止加载的提示框  
+    setTimeout(function () {
+      wx.hideLoading()
+    }, 1000)
+    // 这里必须要清除不然就等着循环死吧  
+    clearTimeout(times);
+
+    self.setData({ showTopTips: false, errorMsg: '' });
+    var skey = wx.getStorageSync('user[skey]')    // skey  
+    var openid = wx.getStorageSync('user[openid]')  // openid  
+    var expired_time = wx.getStorageSync('user[expired_time]')// 过期时间  
+    wx.showToast({
+      title: '验证成功',
+      icon: 'success',
+      duration: 1500
+    })
+  } else {
+    if (Date.parse(new Date()) > (timeflag + 8000)) {
+      setTimeout(function () {
+        wx.hideLoading()
+      }, 1000)
+      // 这里必须要清除不然就等着循环死吧  
+      clearTimeout(times);
+      wx.showToast({
+        title: '登录验证失败',
+        image: '../../image/ava_error.png',
+        duration: 1500
+      })
+    }
+
+  }
+});
 }
