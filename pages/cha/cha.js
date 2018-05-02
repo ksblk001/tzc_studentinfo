@@ -3,9 +3,9 @@ var app = getApp();
 
 Page({
   data: {
-    querylog:[],
+    querylog: [],
     content: [],
-    commits: [['学号', 'xh'], ['姓名', 'xm'], ['寝室', 'xsqs'], ['班级', 'bj'], ['短号', 'dh'], ['长号', 'ch'], ['民族', 'mz'], ['政治面貌', 'zzmm'],  ['籍贯', 'jg'],  ['性别', 'xb'], ['父亲姓名', 'fqxm'], ['父亲电话', 'fqdh'], ['母亲姓名', 'mqxm'], ['母亲电话', 'mqdh']],
+    commits: [['学号', 'xh'], ['姓名', 'xm'], ['寝室', 'xsqs'], ['班级', 'bj'], ['短号', 'dh'], ['长号', 'ch'], ['民族', 'mz'], ['政治面貌', 'zzmm'], ['籍贯', 'jg'], ['性别', 'xb'], ['父亲姓名', 'fqxm'], ['父亲电话', 'fqdh'], ['母亲姓名', 'mqxm'], ['母亲电话', 'mqdh']],
     nzopen: false,
     nzshow: false,
     isfull: false,
@@ -29,22 +29,19 @@ Page({
     Product: {},
   },
   onLoad: function () {
-    var that = this;
-    wx.getSystemInfo({
-      success: function (res) {
-        that.setData({
-          windowHeight: res.windowHeight,
-          windowWidth: res.windowWidth
-        })
-      }
-    });
+
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    var that=this;
+    var that = this;
+    that.setData({
+      windowHeight: app.globalData.windowHeight,
+      windowWidth: app.globalData.windowWidth
+    });
+    
     checklogin(that);
   },
 
@@ -165,8 +162,8 @@ Page({
     var keyword = e.target.dataset.keyword;
     var commit = e.target.dataset.commit;
     this.setData({
-      method:method,
-      commit:commit,
+      method: method,
+      commit: commit,
       barcode: keyword
     });
   },
@@ -175,7 +172,7 @@ Page({
     this.setData({
       barcode: "",
       hiddenData: true,
-      querylog:""
+      querylog: ""
     });
   },
   query: function (e) {
@@ -194,23 +191,23 @@ Page({
     var method = this.data.method;
     var keyword = that.data.barcode
     var commit = this.data.commit;
-    requestStuInfo(method,keyword,this);
-    var querytmp=[];
-    if(wx.getStorageSync('querylog')!=''){
+    requestStuInfo(method, keyword, this);
+    var querytmp = [];
+    if (wx.getStorageSync('querylog') != '') {
       querytmp = wx.getStorageSync('querylog')
-      }
-    querytmp.splice(9, 1); 
-    querytmp.splice(0, 0, [method,keyword,commit]);
-    that.setData({querylog:querytmp});
+    }
+    querytmp.splice(9, 1);
+    querytmp.splice(0, 0, [method, keyword, commit]);
+    that.setData({ querylog: querytmp });
     wx.setStorageSync('querylog', querytmp);
     //console.log(that.data.querylog);
 
   },
 })
 
-function requestStuInfo(method,keyword,self){
+function requestStuInfo(method, keyword, self) {
   var skey = wx.getStorageSync('user[skey]');
-  console.log(method+','+keyword);
+  console.log(method + ',' + keyword);
   var url = "https://wx.tzour.com/sxxy/public/admin/pub/xcxapi.html";//查询数据的URL 
   wx.request({
     url: url,
@@ -220,7 +217,7 @@ function requestStuInfo(method,keyword,self){
       var result = res.data;
       console.log(result);
       if (typeof (result.error_code) == "undefined") {
-        var data = result.content;
+        var data = result.students;
         //var jsonData = JSON.stringify(data);
         //typeof cb == "function" && cb(true, jsonData)
         typeof self !== 'undefined' && self.setData({
@@ -237,9 +234,9 @@ function requestStuInfo(method,keyword,self){
           duration: 2000
         })
       } else {
-        if(result.error_code=='002'){
+        if (result.error_code == '002') {
           try {
-            wx.clearStorageSync()
+            wx.removeStorageSync('user[skey]');
           } catch (e) {
             // Do something when catch error
           }
@@ -247,7 +244,7 @@ function requestStuInfo(method,keyword,self){
 
         }
         self.setData({ hiddenData: true });
-        self.setData({ showTopTips: true, errorMsg: result.error_message});
+        self.setData({ showTopTips: true, errorMsg: result.error_message });
         wx.showToast({
           title: result.error_message,
           image: '../../image/ava_error.png',
@@ -275,65 +272,65 @@ function requestStuInfo(method,keyword,self){
 }
 
 //检查登录状态
-function checklogin(self){
-var skey = wx.getStorageSync('user[skey]')
-var openid = wx.getStorageSync('user[openid]')
-var expired_time = wx.getStorageSync('user[expired_time]')
-var timestamp = (Date.parse(new Date())) / 1000;
-if (skey != '' && timestamp < expired_time) {
-  return;
-}
-login(self);
-}
-
-//重新获取登录状态
-function login(self){
-var timeflag = Date.parse(new Date());
-wx.showLoading({
-  title: '登录验证中',
-  mask: true
-})
-// 因为我需要登录后的用户信息,但是app.getUserInfo和下面的request请求基本上是同时请求的所以获取不到  
-app.mycheck();
-// 在这里我设置了一个定时器循环多次去执行去判断上一步的函数执行完毕没有  
-// 但是也不能无限循环,所以要叫一个判断当执行超过多少秒后报一个网络错误  
-var times = setInterval(function () {
-  // 因为一开始缓存当中指定的key为假当为真的时候就说明上一步成功了这时候就可以开始发送下一步的请求了  
+function checklogin(self) {
   var skey = wx.getStorageSync('user[skey]')
   var openid = wx.getStorageSync('user[openid]')
   var expired_time = wx.getStorageSync('user[expired_time]')
   var timestamp = (Date.parse(new Date())) / 1000;
   if (skey != '' && timestamp < expired_time) {
-    // 在这里停止加载的提示框  
-    setTimeout(function () {
-      wx.hideLoading()
-    }, 1000)
-    // 这里必须要清除不然就等着循环死吧  
-    clearTimeout(times);
+    return;
+  }
+  login(self);
+}
 
-    self.setData({ showTopTips: false, errorMsg: '' });
-    var skey = wx.getStorageSync('user[skey]')    // skey  
-    var openid = wx.getStorageSync('user[openid]')  // openid  
-    var expired_time = wx.getStorageSync('user[expired_time]')// 过期时间  
-    wx.showToast({
-      title: '验证成功',
-      icon: 'success',
-      duration: 1500
-    })
-  } else {
-    if (Date.parse(new Date()) > (timeflag + 8000)) {
+//重新获取登录状态
+function login(self) {
+  var timeflag = Date.parse(new Date());
+  wx.showLoading({
+    title: '登录验证中',
+    mask: true
+  })
+  // 因为我需要登录后的用户信息,但是app.getUserInfo和下面的request请求基本上是同时请求的所以获取不到  
+  app.mycheck();
+  // 在这里我设置了一个定时器循环多次去执行去判断上一步的函数执行完毕没有  
+  // 但是也不能无限循环,所以要叫一个判断当执行超过多少秒后报一个网络错误  
+  var times = setInterval(function () {
+    // 因为一开始缓存当中指定的key为假当为真的时候就说明上一步成功了这时候就可以开始发送下一步的请求了  
+    var skey = wx.getStorageSync('user[skey]')
+    var openid = wx.getStorageSync('user[openid]')
+    var expired_time = wx.getStorageSync('user[expired_time]')
+    var timestamp = (Date.parse(new Date())) / 1000;
+    if (skey != '' && timestamp < expired_time) {
+      // 在这里停止加载的提示框  
       setTimeout(function () {
         wx.hideLoading()
       }, 1000)
       // 这里必须要清除不然就等着循环死吧  
       clearTimeout(times);
+
+      self.setData({ showTopTips: false, errorMsg: '' });
+      var skey = wx.getStorageSync('user[skey]')    // skey  
+      var openid = wx.getStorageSync('user[openid]')  // openid  
+      var expired_time = wx.getStorageSync('user[expired_time]')// 过期时间  
       wx.showToast({
-        title: '登录验证失败',
-        image: '../../image/ava_error.png',
+        title: '验证成功',
+        icon: 'success',
         duration: 1500
       })
-    }
+    } else {
+      if (Date.parse(new Date()) > (timeflag + 8000)) {
+        setTimeout(function () {
+          wx.hideLoading()
+        }, 1000)
+        // 这里必须要清除不然就等着循环死吧  
+        clearTimeout(times);
+        wx.showToast({
+          title: '登录验证失败',
+          image: '../../image/ava_error.png',
+          duration: 1500
+        })
+      }
 
-  }
-});
+    }
+  });
 }

@@ -1,6 +1,5 @@
 {
-  "window": {
-    "enablePullDownRefresh": false
-  },
-  "navigationBarTitleText": "数信微学工---语音查询"
+  "borderStyle": "black",
+  "navigationBarBackgroundColor": "#E1DCC8",
+  "navigationBarTitleText": "微学工--语音查询页"
 }

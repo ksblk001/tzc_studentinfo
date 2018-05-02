@@ -1,25 +1,59 @@
-<view class="container">
-  <view class="page-section">
-    <view class="text-box" scroll-y="true">      
-      <text style="max-width:200px;overflow-y:auto;height:300px;" selectable="true">{{outputTxt}}</text>
+    <!--  
+    变量说明：  
+    showTopTips ： 是否显示提示信息  
+    errorMsg ： 错误信息  
+    windowHeight ：设备的窗口的高度  
+    windowWidth ： 设备的窗口的宽度  
+    account ： 账号  
+    password ：密码  
+    subPassword ：确认密码  
+    -->  
+    <view class="page__bd">
+    
+      <!--顶部提示框-->
+      <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">{{errorMsg}}</view>      
+      <view style="height: {{windowHeight}}px; width: {{windowWidth}}px;" class="back_img">  
+      </view>
+
+      <scroll-view scroll-y="true" scroll-top="{{scrolltop}}" style="height:{{windowHeight*0.99}}px;position:absolute;top:{{windowHeight*0.01}}px;">
+    <!--一位学生信息-->
+    <view style="position:static;" wx:for="{{outputTxt}}" wx:for-item="stu">
+            <view class="weui-cell__hd" sytle="width: {{windowWidth}}px;text-align:center;margin-left:auto;">  
+                <view style="position:relative;width: {{windowWidth}}px;border-right:2rpx solid #E9E9E9;text-align:center;margin-left:auto;margin-bottom:10px;">当前第{{index+1}}条记录——共{{outputTxt.length}}条</view>  
+            </view> 
+      <!--圆形图-->
+      <view style="top:{{windowHeight * 0.06}}px;">
+        <image src="{{stu.zp}}" data-src="{{stu.zp}}" bindtap="previewImage" mode="aspectFill" style="width: {{windowWidth * 0.4}}px;height:{{windowWidth * 0.4}}px; margin-left:{{windowWidth * 0.5 - 80}}px;border-radius:{{windowWidth * 0.2}}px;"></image>  
+      </view>
+      <!--列表开始-->
+        <view class="login_info" style="position:static;top:{{windowHeight * 0.35}}px;width: {{windowWidth * 0.92}}px;">  
+          <view class="weui-cells weui-cells_after-title login_form">  
+          <view wx:for="{{stu.content}}" wx:for-item="mycontent">
+            <view wx:for="{{mycontent}}" wx:for-item="stuinfo" data-method="{{stuinfo[0]}}" data-keyword="{{stuinfo[2]}}" bindtouchstart="bindTouchStart" bindtouchend="bindTouchEnd" bindlongtap="bingLongTap" bindtap="bindTap" class="weui-cell weui-cell_input">  
+              <view class="weui-cell__hd">  
+                <view class="weui-label" style="border-right:2rpx solid #E9E9E9;" data-method="{{stuinfo[0]}}" data-keyword="{{stuinfo[2]}}">{{stuinfo[1]}}：</view>  
+              </view>  
+              <view class="weui-cell__hd">  
+                <view style="margin-left:6px;margin-top:6px;margin-bottom:6px;" data-method="{{stuinfo[0]}}" data-keyword="{{stuinfo[2]}}">{{stuinfo[2]}}</view>
+
+              </view>  
+            </view>  
+          </view>
+          </view>  
+        </view>
+        <view style="height:35px;"></view>
+        <view style="height:3px;background:#bbb;"></view>
+        <view style="height:35px;"></view>
     </view>
-  </view>
-
-  <view class="page-section">
-    <text selectable="true" class="text-head">数信微学工，作者QQ：275415665</text>
-  </view>
-
-<view  wx:if="{{isSpeaking}}"  class="speak-style">
-  <image class="sound-style" src="../../pics/voice_icon_speech_sound_1.png" ></image>
-  <image wx:if="{{j==2}}" class="sound-style" src="../../pics/voice_icon_speech_sound_2.png" ></image>
-  <image wx:if="{{j==3}}" class="sound-style" src="../../pics/voice_icon_speech_sound_3.png" ></image>
-  <image wx:if="{{j==4}}" class="sound-style" src="../../pics/voice_icon_speech_sound_4.png" ></image>
-  <image wx:if="{{j==5}}"class="sound-style" src="../../pics/voice_icon_speech_sound_5.png" ></image>
-</view>
-
-</view>
+      </scroll-view>
 
 
-<view class="record-style">
-  <button type="primary" class="btn-style" bindtouchstart="touchdown" bindtouchend="touchup">{{btnText}}</button>
-</view>
+
+
+
+
+
+      <view style="position:absolute;top:{{windowHeight * 0.87}}px;">  
+        <image bindtouchstart="touchdown" bindtouchend="touchup" bindtouchmove="touchmove" src="https://wx.tzour.com/image/recoder.jpg" mode="aspectFill" style="width: {{windowWidth * 0.16}}px;height:{{windowWidth * 0.16}}px; margin-left:{{windowWidth * 0.42}}px;border-radius:{{windowWidth * 0.2}}px;"></image>  
+      </view>
+    </view>  

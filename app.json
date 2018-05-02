@@ -1,8 +1,7 @@
 {
   "pages": [
-    "pages/asrq/asrq",
+    "pages/asr/asr",
     "pages/cha/cha",
-    "pages/index/index",
     "pages/face/face",
     "pages/signup/signup",
     "pages/logs/logs"
@@ -16,7 +15,6 @@
     "enablePullDownRefresh": false
   },
   "tabBar": {
-
     "selectedColor": "#1296db",
     "borderStyle": "white",
     "backgroundColor": "#E4DFCC",
@@ -28,7 +26,7 @@
         "text": "文字查询"
       },
       {
-        "pagePath": "pages/asrq/asrq",
+        "pagePath": "pages/asr/asr",
         "iconPath": "image/asr.png",
         "selectedIconPath": "image/asr_HL.png",
         "text": "语音查询"

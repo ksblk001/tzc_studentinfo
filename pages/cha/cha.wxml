@@ -52,6 +52,8 @@
 
 
       <scroll-view scroll-y="true" scroll-top="{{scrolltop}}" style="height:{{windowHeight * 0.92}}px;position:absolute;top:{{windowHeight * 0.08}}px;">
+
+      <!--顶部提示框-->
       <view class="weui-toptips_warn" style="color:#ffffff;text-align:center;"  wx:if="{{showTopTips}}">{{errorMsg}}</view>
     <!--一位学生信息-->
     <view style="position:static;" wx:for="{{outputTxt}}" wx:for-item="stu">
@@ -65,7 +67,9 @@
       <!--列表开始-->
         <view class="login_info" style="position:static;top:{{windowHeight * 0.35}}px;width: {{windowWidth * 0.92}}px;">  
           <view class="weui-cells weui-cells_after-title login_form">  
-            <view wx:for="{{stu.info}}" wx:for-item="stuinfo" data-method="{{stuinfo[0]}}" data-keyword="{{stuinfo[2]}}" bindtouchstart="bindTouchStart" bindtouchend="bindTouchEnd" bindlongtap="bingLongTap" bindtap="bindTap" class="weui-cell weui-cell_input">  
+
+          <view wx:for="{{stu.content}}" wx:for-item="mycontent">
+            <view wx:for="{{mycontent}}" wx:for-item="stuinfo" data-method="{{stuinfo[0]}}" data-keyword="{{stuinfo[2]}}" bindtouchstart="bindTouchStart" bindtouchend="bindTouchEnd" bindlongtap="bingLongTap" bindtap="bindTap" class="weui-cell weui-cell_input">  
               <view class="weui-cell__hd">  
                 <view class="weui-label" style="border-right:2rpx solid #E9E9E9;" data-method="{{stuinfo[0]}}" data-keyword="{{stuinfo[2]}}">{{stuinfo[1]}}：</view>  
               </view>  
@@ -74,6 +78,8 @@
 
               </view>  
             </view>  
+          </view>
+
           </view>  
         </view>
         <view style="height:25px;"></view>

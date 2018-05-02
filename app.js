@@ -5,7 +5,15 @@ var UTIL = require('./utils/util.js');
 
 App({
   onShow: function () {
+    var that=this;
     UTIL.log('App Show')
+    wx.getSystemInfo({
+      success: function (res) {
+        that.globalData.windowHeight = res.windowHeight;
+        that.globalData.windowWidth = res.windowWidth;
+      }
+    });
+    console.log(that.globalData.windowHeight + ',' + that.globalData.windowWidth);
   },
   onHide: function () {
     UTIL.log('App Hide')
@@ -159,6 +167,8 @@ App({
   },
 
   globalData:{
+    windowHeight: 0,
+    windowWidth: 0,
     userInfo:null,
     corpus: corpusList,
     custId: '',
