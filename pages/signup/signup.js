@@ -88,7 +88,7 @@ Page({
                     if (res.confirm) {
                       // 点击确定后跳转登录页面并关闭当前页面  
                       wx.switchTab({
-                        url: '../index/index'
+                        url: '../cha/cha'
                       })
                     }
                   }

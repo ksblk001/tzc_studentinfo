@@ -4,11 +4,12 @@
     "pages/cha/cha",
     "pages/face/face",
     "pages/signup/signup",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/help/help"
   ],
   "window": {
     "backgroundTextStyle": "black",
-    "navigationBarBackgroundColor": "#F8F8F8",
+    "navigationBarBackgroundColor": "#E4DFCC",
     "navigationBarTitleText": "数信微学工--学生信息移动管理平台",
     "navigationBarTextStyle": "black",
     "backgroundColor": "#F8F8F8",
@@ -16,7 +17,7 @@
   },
   "tabBar": {
     "selectedColor": "#1296db",
-    "borderStyle": "white",
+    "borderStyle": "black",
     "backgroundColor": "#E4DFCC",
     "list": [
       {
@@ -38,10 +39,10 @@
         "text": "人脸识别"
       },
       {
-        "pagePath": "pages/signup/signup",
+        "pagePath": "pages/help/help",
         "iconPath": "image/icon_API.png",
         "selectedIconPath": "image/icon_API_HL.png",
-        "text": "注册绑定"
+        "text": "使用帮助"
       }
     ]
   },

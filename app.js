@@ -61,9 +61,10 @@ App({
                     // 4.解密成功后 获取自己服务器返回的结果  
                     if(res.data.error){
                       console.log('error跳转')
-                      wx.switchTab({
+                      wx.navigateTo({
                         url: '../signup/signup'
                       })
+
                     }else{ 
                       console.log(res.data.skey !== '');
                       if (res.data.skey!='') {
