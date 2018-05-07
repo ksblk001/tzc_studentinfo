@@ -6,7 +6,8 @@
     "pages/signup/signup",
     "pages/logs/logs",
     "pages/help/help",
-    "pages/my/my"
+    "pages/my/my",
+    "pages/settings/settings"
   ],
   "window": {
     "backgroundTextStyle": "black",

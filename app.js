@@ -6,6 +6,17 @@ var UTIL = require('./utils/util.js');
 App({
   onShow: function () {
     var that=this;
+    try {
+      var isback_img = wx.getStorageSync('isback_img')
+      if (typeof isback_img=='undefined') {
+        that.globalData.isback_img=false;
+      }else{
+        that.globalData.isback_img=isback_img;
+      }
+    } catch (e) {
+      // Do something when catch error
+    }
+    console.log(that.globalData.isback_img);
     UTIL.log('App Show')
     wx.getSystemInfo({
       success: function (res) {
@@ -20,25 +31,6 @@ App({
   },
   onLaunch: function () {
     UTIL.log('App Launch')
-    this.updateUserLocation()
-  },
-
-  updateUserLocation: function() {
-    var that = this
-    wx.getLocation({
-      //type: 'wgs84',  // gps原始坐标
-      type: 'gcj02', //国家标准加密坐标
-      success: function (res) {
-        that.globalData.latitude = res.latitude
-        that.globalData.longitude = res.longitude
-        that.globalData.speed = res.speed
-        //var accuracy = res.accuracy
-        UTIL.log('REFRESH LOCATION: ' + that.globalData.latitude + ' | ' + that.globalData.longitude + ' , speed: ' + that.globalData.speed)
-      },
-      fail: function(res) {
-        UTIL.log('REFRESH LOCATION FAILED...')
-      }
-    })
   },
 
 //
@@ -168,6 +160,7 @@ App({
   },
 
   globalData:{
+    isback_img:false,
     windowHeight: 0,
     windowWidth: 0,
     userInfo:null,

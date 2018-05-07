@@ -1,5 +1,5 @@
 @import '../../weui.wxss';
-/*@import '../../back_img.wxss';*/
+@import '../../back_img.wxss';
     .login_info{  
       z-index: 999;  
       position:absolute;  

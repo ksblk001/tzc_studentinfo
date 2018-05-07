@@ -47,7 +47,7 @@
       
 
       <!--背景图片,平铺整个界面-->
-      <view style="height: {{windowHeight}}px;width: {{windowWidth}}px;" class="back_img">  
+      <view style="height: {{windowHeight}}px; width: {{windowWidth}}px;" class="{{isback_img ? 'back_img' : ''}}">
       </view>
 
 

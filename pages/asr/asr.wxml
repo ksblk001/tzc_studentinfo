@@ -12,7 +12,7 @@
     
       <!--顶部提示框-->
       <view class="weui-toptips weui-toptips_warn" wx:if="{{showTopTips}}">{{errorMsg}}</view>      
-      <view style="height: {{windowHeight}}px; width: {{windowWidth}}px;" class="back_img">  
+      <view style="height: {{windowHeight}}px; width: {{windowWidth}}px;" class="{{isback_img ? 'back_img' : ''}}">
       </view>
 
       <scroll-view scroll-y="true" scroll-top="{{scrolltop}}" style="height:{{windowHeight*0.99}}px;position:absolute;top:{{windowHeight*0.01}}px;">

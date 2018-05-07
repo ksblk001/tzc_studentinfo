@@ -1,19 +1,26 @@
+var app=getApp();
 Page({
   data: {
     list: [
       {
-        id: 'signup',
+        id: 'settings',
         name: '我的设置',
         open: false,
         pages: []
       }, 
       {
-        id: 'text',
+        id: 'help',
         name: '帮助说明',
         open: false,
         pages: []
       }
     ]
+  },
+  onLoad:function(){
+    var that=this;
+    that.setData({
+      isback_img: app.globalData.isback_img
+    })
   },
   kindToggle: function (e) {
     var id = e.currentTarget.id, list = this.data.list;

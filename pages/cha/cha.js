@@ -38,6 +38,7 @@ Page({
   onShow: function () {
     var that = this;
     that.setData({
+      isback_img: app.globalData.isback_img,
       windowHeight: app.globalData.windowHeight,
       windowWidth: app.globalData.windowWidth
     });

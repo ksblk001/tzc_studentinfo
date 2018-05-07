@@ -1,14 +1,5 @@
-@import 'weui.wxss';
-.back_img{  
-      background: url(https://wx.tzour.com/image/meBack.jpg) no-repeat;
-      background-size:cover;  
-      -webkit-filter: blur(10px); /* Chrome, Opera */  
-      -moz-filter: blur(10px);  
-      -ms-filter: blur(10px);      
-      filter: blur(10px);   
-      z-index:0;  
-      position:relative;  
-    }
+@import '../../weui.wxss';
+@import '../../back_img.wxss';
     .login_info{  
       z-index: 999;  
       position:absolute;  
