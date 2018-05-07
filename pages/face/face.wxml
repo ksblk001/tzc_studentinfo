@@ -26,10 +26,12 @@
         <image src="{{stu.zp}}" data-src="{{stu.zp}}" bindtap="previewImage" mode="aspectFill" style="width: {{windowWidth * 0.4}}px;height:{{windowWidth * 0.4}}px; margin-left:{{windowWidth * 0.5 - 80}}px;border-radius:{{windowWidth * 0.2}}px;box-shadow: 4px 4px 7px #888888;"></image>  
       </view>
       <!--列表开始-->
-        <view class="login_info" style="position:static;top:{{windowHeight * 0.35}}px;width: {{windowWidth * 0.92}}px;">  
-          <view class="weui-cells weui-cells_after-title login_form" style="box-shadow: 5px 5px 7px #888888;">  
-          <view wx:for="{{stu.content}}" wx:for-item="mycontent">
-            <view wx:for="{{mycontent}}" wx:for-item="stuinfo" data-method="{{stuinfo[0]}}" data-keyword="{{stuinfo[2]}}" bindtouchstart="bindTouchStart" bindtouchend="bindTouchEnd" bindlongtap="bingLongTap" bindtap="bindTap" class="weui-cell weui-cell_input">  
+        <view class="login_info" style="position:static;top:{{windowHeight * 0.35}}px;width: {{windowWidth * 0.96}}px;">  
+          <view class="weui-cells weui-cells_after-title login_form">  
+
+          <view wx:for="{{stu.content}}" wx:for-item="mycontent" style="box-shadow: 5px 5px 7px #888888;">
+            <view wx:if="{{mycontent.myinfo.length>0}}" style="font-size:20px;font-weight:bold;color:#000000;position:relative;width: {{windowWidth}}px;border-right:5rpx solid #E9E9E9;text-align:center;margin-left:-30px;margin-top:4px;">{{mycontent.title}}</view>
+            <view wx:for="{{mycontent.myinfo}}" wx:for-item="stuinfo" data-method="{{stuinfo[0]}}" data-keyword="{{stuinfo[2]}}" bindtouchstart="bindTouchStart" bindtouchend="bindTouchEnd" bindlongtap="bingLongTap" bindtap="bindTap" class="weui-cell weui-cell_input">  
               <view class="weui-cell__hd">  
                 <view class="weui-label" style="border-right:2rpx solid #E9E9E9;" data-method="{{stuinfo[0]}}" data-keyword="{{stuinfo[2]}}">{{stuinfo[1]}}：</view>  
               </view>  
@@ -37,8 +39,12 @@
                 <view style="margin-left:6px;margin-top:6px;margin-bottom:6px;" data-method="{{stuinfo[0]}}" data-keyword="{{stuinfo[2]}}">{{stuinfo[2]}}</view>
 
               </view>  
-            </view>  
+            </view> 
+            <view wx:if="{{mycontent.myinfo.length>0}}" style="height:10px;"></view>
+            <view wx:if="{{mycontent.myinfo.length>0}}" style="height:1px;background:#bbb;"></view>
+            <view wx:if="{{mycontent.myinfo.length>0}}" style="height:5px;"></view>
           </view>
+          
           </view>  
         </view>
         <view style="height:35px;"></view>

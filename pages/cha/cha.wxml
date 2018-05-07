@@ -10,7 +10,7 @@
     -->  
     
 <view wx:if="{{isfull}}" class="fullbg {{isfull ?'fullopacity':''}}" bindtap="hidebg"></view>
-      <view class="search-wrapper">
+      <view class="search-wrapper" style="height:{{windowHeight * 0.08}}px;">
        <view class="search-panel">
          <view class="search-section" >
            <view class="search-button-wrapper" style="padding-left:0px;">  
@@ -68,11 +68,11 @@
         <view class="login_info" style="position:static;top:{{windowHeight * 0.35}}px;width: {{windowWidth * 0.96}}px;">  
           <view class="weui-cells weui-cells_after-title login_form">  
 
-          <view wx:for="{{stu.content}}" wx:for-item="mycontent" style="box-shadow: 5px 5px 7px #888888;">
-            <view wx:if="{{mycontent.myinfo.length>0}}" style="font-size:20px;font-weight:bold;color:#000000;position:relative;width: {{windowWidth}}px;border-left:5rpx solid #E9E9E9;border-right:5rpx solid #E9E9E9;text-align:center;margin-left:-25px;margin-top:4px;">{{mycontent.title}}</view>
-            <view wx:for="{{mycontent.myinfo}}" wx:for-item="stuinfo" data-method="{{stuinfo[0]}}" data-keyword="{{stuinfo[2]}}" bindtouchstart="bindTouchStart" bindtouchend="bindTouchEnd" bindlongtap="bingLongTap" bindtap="bindTap" class="weui-cell weui-cell_input">  
-              <view class="weui-cell__hd">  
-                <view class="weui-label" style="border-right:2rpx solid #E9E9E9;" data-method="{{stuinfo[0]}}" data-keyword="{{stuinfo[2]}}">{{stuinfo[1]}}：</view>  
+          <view wx:for="{{stu.content}}" wx:for-item="mycontent" style="box-shadow: 3px 3px 5px #888888;">
+            <view wx:if="{{mycontent.myinfo.length>0}}" style="font-size:20px;font-weight:bold;color:#000000;position:relative;width: {{windowWidth}}px;border-right:5rpx solid #E9E9E9;text-align:center;margin-left:-30px;margin-top:4px;">{{mycontent.title}}</view>
+            <view wx:for="{{mycontent.myinfo}}" wx:for-item="stuinfo" data-method="{{stuinfo[0]}}" data-keyword="{{stuinfo[2]}}" bindtouchstart="bindTouchStart" bindtouchend="bindTouchEnd" bindlongtap="bingLongTap" bindtap="bindTap" class="weui-cell weui-cell_input" style="padding-left:0px;border-top:1rpx solid #d9d9d9;">  
+              <view  style="border-top:0rpx;">  
+                <view class="weui-label" style="margin-left:6px;border-right:2rpx solid #E9E9E9;" data-method="{{stuinfo[0]}}" data-keyword="{{stuinfo[2]}}">{{stuinfo[1]}}：</view>  
               </view>  
               <view class="weui-cell__hd">  
                 <view style="margin-left:6px;margin-top:6px;margin-bottom:6px;" data-method="{{stuinfo[0]}}" data-keyword="{{stuinfo[2]}}">{{stuinfo[2]}}</view>
