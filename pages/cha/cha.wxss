@@ -20,7 +20,9 @@
     }  
       
     .search-panel {  
-      background-color: #E1DCC8;  
+       border-radius:6px;
+       border-bottom: 0px solid #b1b3b4;
+       box-shadow: 2px 2px 5px #aaaaaa;
     }  
       
     .search-section {  
@@ -39,7 +41,7 @@
       
     .search-input-wrapper {  
       flex: 8;  
-      padding: 5px;  
+      padding: 2px;  
       background-color: #eee;  
       border-radius: 3px;  
     }  

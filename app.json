@@ -5,11 +5,12 @@
     "pages/face/face",
     "pages/signup/signup",
     "pages/logs/logs",
-    "pages/help/help"
+    "pages/help/help",
+    "pages/my/my"
   ],
   "window": {
     "backgroundTextStyle": "black",
-    "navigationBarBackgroundColor": "#E4DFCC",
+    "navigationBarBackgroundColor": "#FFFFFF",
     "navigationBarTitleText": "数信微学工--学生信息移动管理平台",
     "navigationBarTextStyle": "black",
     "backgroundColor": "#F8F8F8",
@@ -18,7 +19,7 @@
   "tabBar": {
     "selectedColor": "#1296db",
     "borderStyle": "black",
-    "backgroundColor": "#E4DFCC",
+    "backgroundColor": "#FFFFFF",
     "list": [
       {
         "pagePath": "pages/cha/cha",
@@ -39,10 +40,10 @@
         "text": "人脸识别"
       },
       {
-        "pagePath": "pages/help/help",
-        "iconPath": "image/icon_API.png",
-        "selectedIconPath": "image/icon_API_HL.png",
-        "text": "使用帮助"
+        "pagePath": "pages/my/my",
+        "iconPath": "image/my.png",
+        "selectedIconPath": "image/my_HL.png",
+        "text": "我的"
       }
     ]
   },
