@@ -186,7 +186,7 @@ Page({
       || that.data.barcode.length <= 0) {
       that.setData({ hiddenData: true });
       wx.showToast({
-        title: '请输入条码',
+        title: '请输入查询关键词',
         image: '../../image/ava_error.png',
         duration: 2000
       });
