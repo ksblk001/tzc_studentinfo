@@ -1,5 +1,6 @@
-var util = require('../../utils/util.js');
 var app = getApp();
+
+var url = app.globalData.url;
 
 Page({
   data: {
@@ -14,7 +15,7 @@ Page({
     method: 'xm',
     commit: '姓名',
 
-
+    showHelpTips: true,
     showTopTips: false,
     errorMsg: "",
     outputTxt: '',
@@ -29,7 +30,9 @@ Page({
     Product: {},
   },
   onLoad: function () {
-
+    wx.showShareMenu({
+      withShareTicket: true
+    })
   },
 
   /**
@@ -207,11 +210,17 @@ Page({
 })
 
 function requestStuInfo(method, keyword, self) {
+
+  //隐藏中间帮助提示tips框
+  typeof self !== 'undefined' && self.setData({
+    showHelpTips: false
+  })
+
   var skey = wx.getStorageSync('user[skey]');
   console.log(method + ',' + keyword);
-  var url = "https://wx.tzour.com/sxxy/public/admin/pub/xcxapi.html";//查询数据的URL 
+  var urls = url + "/sxxy/public/admin/pub/xcxapi.html";//查询数据的URL 
   wx.request({
-    url: url,
+    url: urls,
     data: { keyword: keyword, skey: skey, method: method },
     method: 'GET',
     success: function (res) {
@@ -301,6 +310,7 @@ function login(self) {
     var openid = wx.getStorageSync('user[openid]')
     var expired_time = wx.getStorageSync('user[expired_time]')
     var timestamp = (Date.parse(new Date())) / 1000;
+    console.log('开始判断成功没');
     if (skey != '' && timestamp < expired_time) {
       // 在这里停止加载的提示框  
       setTimeout(function () {
@@ -333,5 +343,5 @@ function login(self) {
       }
 
     }
-  });
+  },1000);
 }

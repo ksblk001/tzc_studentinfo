@@ -1,10 +1,13 @@
 {
   "pages": [
     "pages/asr/asr",
+    "pages/help/signup/signup",
+    "pages/help/text/text",
+    "pages/help/asr/asr",
+    "pages/help/face/face",
     "pages/cha/cha",
     "pages/face/face",
     "pages/signup/signup",
-    "pages/logs/logs",
     "pages/help/help",
     "pages/my/my",
     "pages/settings/settings"

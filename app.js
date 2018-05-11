@@ -43,13 +43,13 @@ App({
                 // 请求自己的服务器  
                 wx.request({
                   // 自己的服务接口地址  
-                  url: 'https://wx.tzour.com/sxxy/public/index.php/admin/pub/getsession_key.html',
+                  url: that.globalData.url + '/sxxy/public/index.php/admin/pub/getsession_key.html',
                   method: 'POST',
                   header: { 'content-type': 'application/x-www-form-urlencoded' },
                   data: { code: code },
                   success: function (res) {
                     console.log(res);
-                    console.log((typeof(res.data.error) == 'undefined'))
+                    console.log('res.data.error,类型'+(typeof(res.data.error) == 'undefined'))
                     // 4.解密成功后 获取自己服务器返回的结果  
                     if(res.data.error){
                       console.log('error跳转')
@@ -160,6 +160,8 @@ App({
   },
 
   globalData:{
+    url: 'https://wx.tzour.com',
+    quitflag:false,
     isback_img:false,
     windowHeight: 0,
     windowWidth: 0,
@@ -176,7 +178,7 @@ App({
 function getSessionKey(code,session) {
   var sessionresult;
   wx.request({
-    url: 'https://wx.tzour.com/sxxy/public/index.php/admin/pub/getsession_key.html',//requestUrl,
+    url: that.globalData.url + '/sxxy/public/index.php/admin/pub/getsession_key.html',//requestUrl,
     data: {
       code: code,
     },

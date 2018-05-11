@@ -1,4 +1,3 @@
-var util = require('../../utils/util.js');
 var app = getApp();
 //微信小程序新录音接口，录出来的是aac或者mp3，这里要录成mp3
 const mp3Recorder = wx.getRecorderManager()
@@ -11,9 +10,11 @@ const mp3RecoderOptions = {
   //frameSize: 50
 }
 
+var url = app.globalData.url;
 
 Page({
   data: {
+    showHelpTips:true,
     outputTxt:'',
     showTopTips:false,
     errorMsg:'',
@@ -22,6 +23,16 @@ Page({
     currentY:0
   },
   onLoad: function () {
+    wx.showShareMenu({
+      withShareTicket: true
+    })
+    if (app.globalData.quitflag) {//如果flag为true，退出  
+      wx.navigateBack({
+        delta: 1
+      })
+    } else {
+      
+    }
     var that = this;
 
     //onLoad中为录音接口注册两个回调函数，主要是onStop，拿到录音mp3文件的文件名（不用在意文件后辍是.dat还是.mp3，后辍不决定音频格式）
@@ -30,7 +41,7 @@ Page({
     mp3Recorder.onStop((res) => {
       console.log('mp3Recorder.onStop() ' + res)
       const { tempFilePath } = res
-      var urls = "https://wx.tzour.com/sxxy/public/index.php/admin/pub/asrapi.html";
+      var urls = url + "/sxxy/public/index.php/admin/pub/asrapi.html";
       if(that.data.recoderflag){processFileUploadForAsr(urls, tempFilePath, this)}
     })
   },
@@ -144,6 +155,12 @@ Page({
 
 //上传录音文件到 api.happycxz.com 接口，处理语音识别和语义，结果输出到界面
 function processFileUploadForAsr(urls, filePath, self) {
+
+  //隐藏中间帮助提示tips框
+  typeof self !== 'undefined' && self.setData({
+    showHelpTips: false
+  })
+  
   var skey = wx.getStorageSync('user[skey]');
   wx.uploadFile({
     url: urls,
@@ -209,11 +226,12 @@ function processFileUploadForAsr(urls, filePath, self) {
 
 
 function requestStuInfo(method, keyword, self) {
+
   var skey = wx.getStorageSync('user[skey]');
   console.log(method + ',' + keyword);
-  var url = "https://wx.tzour.com/sxxy/public/admin/pub/xcxapi.html";//查询数据的URL 
+  var urls = url + "/sxxy/public/admin/pub/xcxapi.html";//查询数据的URL 
   wx.request({
-    url: url,
+    url: urls,
     data: { keyword: keyword, skey: skey, method: method },
     method: 'GET',
     success: function (res) {
@@ -337,7 +355,7 @@ function login(self) {
       }
 
     }
-  });
+  }, 1000);
 }
 
 //判断反悔结果是否JSON字符串

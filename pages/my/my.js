@@ -13,6 +13,18 @@ Page({
         name: '帮助说明',
         open: false,
         pages: []
+      },
+      {
+        id: 'clear',
+        name: '清除数据',
+        open: false,
+        pages: []
+      },
+      {
+        id: 'quit',
+        name: '退出小程序',
+        open: false,
+        pages: []
       }
     ]
   },
@@ -23,17 +35,29 @@ Page({
     })
   },
   kindToggle: function (e) {
-    var id = e.currentTarget.id, list = this.data.list;
-    for (var i = 0, len = list.length; i < len; ++i) {
-      if (list[i].id == id) {
-        list[i].open = !list[i].open
-      } else {
-        list[i].open = false
+    var id = e.currentTarget.id;
+    if(id=='quit'){
+      app.globalData.quitflag = true;
+      wx.reLaunch({
+        url: '../asr/asr',
+      })
+    }else if(id=='clear'){
+      try {
+        wx.clearStorageSync()
+      } catch (e) {
+        wx.showToast({
+          title: '清除失败',
+          image: '../../image/ava_error.png',
+          duration: 2000
+        })
+        return;
       }
+      wx.showToast({
+        title: '清除成功',
+        icon: 'success',
+        duration: 2000
+      })
     }
-    this.setData({
-      list: list
-    });
   }
 })
 

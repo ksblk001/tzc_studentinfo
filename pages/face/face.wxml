@@ -15,6 +15,14 @@
       <view style="height: {{windowHeight}}px; width: {{windowWidth}}px;" class="{{isback_img ? 'back_img' : ''}}">
       </view>
 
+
+      <view style="position:absolute;top:{{windowHeight*0.5}}px;left:{{windowWidth*0.15}}px;width:{{windowWidth*0.7}}px;color:#757575;border-radius:15px;box-shadow: 4px 4px 7px #888888;border: 1px solid #DDDDDD;font-size:{{windowWidth*0.036}}px;">
+      <text style='font-size:{{windowWidth*0.044}}px;font-weight:bold'>　! ! ! tips:</text>
+      <text>
+　1、短按下方图标上传相册照片识别
+　2、长按下方图标直接拍照识别
+　3、查询结束后，长按信息可进行反查     
+</text></view>
       <scroll-view scroll-y="true" scroll-top="{{scrolltop}}" style="height:{{windowHeight*0.99}}px;position:absolute;top:{{windowHeight*0.01}}px;">
     <!--一位学生信息-->
     <view style="position:static;" wx:for="{{outputTxt}}" wx:for-item="stu">

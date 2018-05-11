@@ -1,6 +1,6 @@
 var util = require('../../utils/util.js');
 var app = getApp();
-
+var url = app.globalData.url;
 Page({
   data: {
     showTopTips: false,
@@ -37,7 +37,7 @@ Page({
     var phonenumber = e.detail.value.phonenumber;
     var that = this;
     var openid = wx.getStorageSync('openid');
-
+    console.log('否为空');
     util.clearError(that);
     // 判断账号是否为空和判断该账号名是否被注册  
     if ("" == util.trim(account)) {
@@ -66,7 +66,7 @@ Page({
         if (res.code) {
           var code = res.code;
           // 验证都通过了执行注册方法  
-          util.req('/sxxy/public/admin/pub/register', {
+          util.req(url+'/sxxy/public/admin/pub/register', {
             "code": code,
             "account": account,
             "password": password,
@@ -88,8 +88,8 @@ Page({
                   success: function (res) {
                     if (res.confirm) {
                       // 点击确定后跳转登录页面并关闭当前页面  
-                      wx.switchTab({
-                        url: '../cha/cha'
+                      wx.redirectTo({
+                        url: '../help/help'
                       })
                     }
                   }

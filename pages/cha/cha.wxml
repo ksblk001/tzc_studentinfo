@@ -10,7 +10,7 @@
     -->  
     
 <view wx:if="{{isfull}}" class="fullbg {{isfull ?'fullopacity':''}}" bindtap="hidebg"></view>
-      <view class="search-wrapper" style="height:{{windowHeight * 0.08}}px;">
+      <view class="search-wrapper" style="height:{{windowHeight * 0.02}}px;">
        <view class="search-panel">
          <view class="search-section" >
            <view class="search-button-wrapper" style="padding-left:0px;">  
@@ -49,6 +49,16 @@
       <!--背景图片,平铺整个界面-->
       <view style="height: {{windowHeight}}px; width: {{windowWidth}}px;" class="{{isback_img ? 'back_img' : ''}}">
       </view>
+
+      <!--使用帮助tips-->
+      <view wx:if="{{showHelpTips}}" style="position:absolute;top:{{windowHeight*0.25}}px;left:{{windowWidth*0.1}}px;width:{{windowWidth*0.8}}px;color:#757575;border-radius:15px;box-shadow: 4px 4px 7px #888888;border: 1px solid #DDDDDD;font-size:{{windowWidth*0.036}}px;">
+      <text style='float:left;margin-left:15px;font-size:{{windowWidth*0.044}}px;font-weight:bold'>! ! ! tips:</text>
+      <text style='float:left;margin-left:15px;'>1、输入关键字可直接进行查询
+2、顶部左侧可选择查询方式类别
+3、点击搜索输入框弹出搜索历史记录可回查
+4、查询结果返回后，点击照片可放大预览
+5、查询结果返回后，长按信息可进行反查</text></view>
+
 
 
       <scroll-view scroll-y="true" scroll-top="{{scrolltop}}" style="height:{{windowHeight * 0.92}}px;position:absolute;top:{{windowHeight * 0.08}}px;">

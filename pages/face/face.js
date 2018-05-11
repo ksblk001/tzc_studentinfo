@@ -1,19 +1,10 @@
-var util = require('../../utils/util.js');
 var app = getApp();
-//微信小程序新录音接口，录出来的是aac或者mp3，这里要录成mp3
-const mp3Recorder = wx.getRecorderManager()
-const mp3RecoderOptions = {
-  duration: 60000,
-  sampleRate: 16000,
-  numberOfChannels: 1,
-  encodeBitRate: 48000,
-  format: 'mp3',
-  //frameSize: 50
-}
 
+var url = app.globalData.url;
 
 Page({
   data: {
+    showHelpTips:true,
     outputTxt:'',
     showTopTips:false,
     errorMsg:'',
@@ -22,7 +13,9 @@ Page({
     currentY:0
   },
   onLoad: function () {
-    var that = this;
+    wx.showShareMenu({
+      withShareTicket: true
+    })
   },
 
   onShow(){
@@ -100,7 +93,7 @@ Page({
           // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
           var tempFilePaths = res.tempFilePaths;
           console.log(tempFilePaths);
-          processFileUploadForFace('https://wx.tzour.com/sxxy/public/index.php/admin/pub/faceapi.html', tempFilePaths[0], that);
+          processFileUploadForFace(url + '/sxxy/public/index.php/admin/pub/faceapi.html', tempFilePaths[0], that);
         }
       })
 
@@ -114,7 +107,7 @@ Page({
           // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
           var tempFilePaths = res.tempFilePaths;
           console.log(tempFilePaths);
-          processFileUploadForFace('https://wx.tzour.com/sxxy/public/index.php/admin/pub/faceapi.html',tempFilePaths[0],that);
+          processFileUploadForFace(url + '/sxxy/public/index.php/admin/pub/faceapi.html',tempFilePaths[0],that);
         }
       })
     }
@@ -125,6 +118,11 @@ Page({
 
 //上传图像文件接口，处理语音识别和语义，结果输出到界面
 function processFileUploadForFace(urls, filePath, self) {
+  //隐藏中间帮助提示tips框
+  typeof self !== 'undefined' && self.setData({
+    showHelpTips: false
+  })
+  
   var skey = wx.getStorageSync('user[skey]');
   wx.uploadFile({
     url: urls,
@@ -192,9 +190,9 @@ function processFileUploadForFace(urls, filePath, self) {
 function requestStuInfo(method, keyword, self) {
   var skey = wx.getStorageSync('user[skey]');
   console.log(method + ',' + keyword);
-  var url = "https://wx.tzour.com/sxxy/public/admin/pub/xcxapi.html";//查询数据的URL 
+  var urls = url + "/sxxy/public/admin/pub/xcxapi.html";//查询数据的URL 
   wx.request({
-    url: url,
+    url: urls,
     data: { keyword: keyword, skey: skey, method: method },
     method: 'GET',
     success: function (res) {

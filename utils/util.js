@@ -26,10 +26,9 @@ function formatNumber(n) {
 }
 
 
-var rootDocment = 'https://wx.tzour.com';
 function req(url, data, cb) {
   wx.request({
-    url: rootDocment + url,
+    url: url,
     data: data,
     method: 'post',
     header: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -44,7 +43,7 @@ function req(url, data, cb) {
 
 function getReq(url, data, cb) {
   wx.request({
-    url: rootDocment + url,
+    url: url,
     data: data,
     method: 'get',
     header: { 'Content-Type': 'application/x-www-form-urlencoded' },
