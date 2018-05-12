@@ -15,8 +15,8 @@
       <view style="height: {{windowHeight}}px; width: {{windowWidth}}px;" class="{{isback_img ? 'back_img' : ''}}">
       </view>
 
-
-      <view style="position:absolute;top:{{windowHeight*0.5}}px;left:{{windowWidth*0.15}}px;width:{{windowWidth*0.7}}px;color:#757575;border-radius:15px;box-shadow: 4px 4px 7px #888888;border: 1px solid #DDDDDD;font-size:{{windowWidth*0.036}}px;">
+<!--使用帮助tips-->
+      <view wx:if="{{showHelpTips}}" style="position:absolute;top:{{windowHeight*0.5}}px;left:{{windowWidth*0.15}}px;width:{{windowWidth*0.7}}px;color:#757575;border-radius:15px;box-shadow: 4px 4px 7px #888888;border: 1px solid #DDDDDD;font-size:{{windowWidth*0.036}}px;">
       <text style='font-size:{{windowWidth*0.044}}px;font-weight:bold'>　! ! ! tips:</text>
       <text>
 　1、短按下方图标上传相册照片识别

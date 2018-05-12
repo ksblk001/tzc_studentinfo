@@ -119,6 +119,7 @@ Page({
 //上传图像文件接口，处理语音识别和语义，结果输出到界面
 function processFileUploadForFace(urls, filePath, self) {
   //隐藏中间帮助提示tips框
+  console.log(typeof self);
   typeof self !== 'undefined' && self.setData({
     showHelpTips: false
   })

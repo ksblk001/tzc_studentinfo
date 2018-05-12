@@ -1,6 +1,5 @@
 @import '../../../weui.wxss';
 @import '../../../back_img.wxss';
-@import "/wxParse/wxParse.wxss";
     .login_info{  
       z-index: 999;  
       position:absolute;  
