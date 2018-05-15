@@ -17,6 +17,6 @@
     <rich-text nodes="{{html}}" bindtap="tap"></rich-text>
   </view>
   <view style='position:static;width:{{windowWidth*0.9}}px;margin-left:{{windowWidth*0.05}}px;'>
-  <video src="http://sxxy-1253202980.cossh.myqcloud.com/testfolder/asr.mp4" controls></video>
+  <video src="http://sxxy-1253202980.cossh.myqcloud.com/help/asr.mp4" controls></video>
   </view>
 </view>
